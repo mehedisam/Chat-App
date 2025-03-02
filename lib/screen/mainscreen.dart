@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:io';
+import 'package:chat_app/widgets/user_picker_image.dart';
 
 final firebase = FirebaseAuth.instance;
 
@@ -16,6 +19,7 @@ class _MainScreenState extends State<MainScreen> {
   var enteredEmail = '';
   var enteredPassword = '';
   final form = GlobalKey<FormState>();
+  File? selectedImage;
 
   void trySubmit() async {
     final isValid = form.currentState!.validate();
@@ -33,6 +37,10 @@ class _MainScreenState extends State<MainScreen> {
           email: enteredEmail,
           password: enteredPassword,
         );
+        await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
+          'userName': 'To be updated',
+          'email': enteredEmail,
+        });
         print(userCredential);
       }
     } on FirebaseAuthException catch (error) {
@@ -72,6 +80,11 @@ class _MainScreenState extends State<MainScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          if(!isLogin)UserPickerImage(ImagePicker: (pickedImage) {
+                            selectedImage = pickedImage;
+                          },),
+                          
+                          SizedBox(height: 20,),
                           TextFormField(
                             decoration: const InputDecoration(
                               labelText: 'Email',

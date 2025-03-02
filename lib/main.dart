@@ -4,8 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:cloudinary_url_gen/cloudinary.dart';
+import 'package:cloudinary_flutter/image/cld_image.dart';
+import 'package:cloudinary_flutter/cloudinary_context.dart';
 
 void main() async {
+  CloudinaryContext.cloudinary =
+      Cloudinary.fromCloudName(cloudName: 'dv3l1bs91');
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
